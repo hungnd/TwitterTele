@@ -1,30 +1,42 @@
 import twint
+import datetime
 from io import StringIO
 import sys
 from googletrans import Translator
-translator = Translator()
 
-c = twint.Config()
+channel = "Meta"
+since = now()
+while True:
+    data = get(channel, since)
+    since = now()
+    sleep(10)
 
-c.Username = "Meta"
-c.Limit = 1
-c.Since = "2022-10-01 04:37:13"
+def get(channel, since):
+    translator = Translator()
 
-save_stdout = sys.stdout
-result = StringIO()
-sys.stdout = result
+    c = twint.Config()
+    c.Username = channel
+    c.Limit = 1
+    c.Since = since
 
-twint.run.Search(c)
+    save_stdout = sys.stdout
+    result = StringIO()
+    sys.stdout = result
 
-sys.stdout = save_stdout
+    twint.run.Search(c)
 
-x = result.getvalue()
-lines = x.splitlines()
-# print(lines)
-for line in lines: 
-    data = line.split(" ", 5)
-    content = data[5]
-    print(translator.translate(content, dest="vi").text)
+    sys.stdout = save_stdout
 
-# x = "1588041733639917569 2022-11-03 12:33:48 +0700 <Meta> @kunmi_16 We can hardly wait!"
-# print("===" + translator.translate(x, dest="vi").text)
+    x = result.getvalue()
+    lines = x.splitlines()
+
+    l = []
+    for line in lines: 
+        data = line.split(" ", 5)
+        content = data[5]
+        l.append(translator.translate(content, dest="vi").text)
+
+    return l
+
+def now():
+    return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
