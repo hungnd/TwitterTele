@@ -29,7 +29,7 @@ def main():
                 data = get(channel, since)
                 notify(channel, data)
             except Exception as e:
-                print('crawl channel error ' + str(e))
+                print("ERROR " + str(e))
         since = now()
         time.sleep(INTERVAL_CHECK)
 
@@ -52,16 +52,17 @@ def get(channel, since):
 
     x = result.getvalue()
     lines = x.splitlines()
-
+    
     l = []
     for line in lines: 
+        if channel not in line:
+            continue
         data = line.split(" ", 5)
         content = data[5]
         l.append({
             "raw": content,
             "tran": translator.translate(content, dest="vi").text,
         })
-
     return l
 
 def now():
