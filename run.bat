@@ -1,0 +1,1 @@
+docker run -ti twcrl -c 'pipenv run python3 run.py'
