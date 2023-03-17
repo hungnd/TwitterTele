@@ -1,4 +1,5 @@
-FROM x0rzkov/twint:latest
+FROM twint
+RUN pip3 install --upgrade pip
 
 RUN pip3 install pipenv
 RUN pipenv install git+https://github.com/twintproject/twint.git#egg=twint

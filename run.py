@@ -17,7 +17,7 @@ TELE_BOT_TOKEN = configParser.get('tele', 'Token')
 TWT_CHANNEL = configParser.get('twitter', 'Channels').strip().split(',')
 INTERVAL_CHECK = int(configParser.get('twitter', 'IntervalCheck'))
 
-bot = telegram.Bot(token=TELE_BOT_TOKEN)
+# bot = telegram.Bot(token=TELE_BOT_TOKEN)
 
 
 def main(): 
