@@ -111,5 +111,6 @@ ENV/
 *.csv
 *.json
 *.txt
+!requirements.txt
 
 test_twint.py
