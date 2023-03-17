@@ -16,8 +16,9 @@ TELE_CHANNEL = configParser.get('tele', 'Channel')
 TELE_BOT_TOKEN = configParser.get('tele', 'Token')
 TWT_CHANNEL = configParser.get('twitter', 'Channels').strip().split(',')
 INTERVAL_CHECK = int(configParser.get('twitter', 'IntervalCheck'))
+ENABLE_TRANSLATE = int(configParser.get('twitter', 'Translator')) > 0
 
-# bot = telegram.Bot(token=TELE_BOT_TOKEN)
+bot = telegram.Bot(token=TELE_BOT_TOKEN)
 
 
 def main(): 
@@ -61,7 +62,7 @@ def get(channel, since):
         content = data[5]
         l.append({
             "raw": content,
-            "tran": translator.translate(content, dest="vi").text,
+            "tran": translator.translate(content, dest="vi").text if ENABLE_TRANSLATE else "",
         })
     return l
 

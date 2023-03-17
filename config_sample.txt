@@ -1,6 +1,7 @@
 [twitter]
 Channels = Meta,elonmusk
 IntervalCheck = 10
+Translator = 0
 
 [tele]
 Channel = 
