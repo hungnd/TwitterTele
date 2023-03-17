@@ -1,6 +1,5 @@
 import twint
 import configparser
-import requests
 import telegram
 import datetime
 import time
