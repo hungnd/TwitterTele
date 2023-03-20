@@ -5,6 +5,7 @@ import datetime
 import time
 from io import StringIO
 import sys
+import threading
 from googletrans import Translator
 
 configParser = configparser.RawConfigParser()   
@@ -21,20 +22,22 @@ bot = telegram.Bot(token=TELE_BOT_TOKEN)
 
 
 def main(): 
-    since = now()
     while True:
         for channel in TWT_CHANNEL:
-            try: 
-                print('start crawl channel ' + channel)
-                data = get(channel, since)
-                notify(channel, data)
-            except Exception as e:
-                print("ERROR " + str(e))
-        since = now()
+            threading.Thread(target=runEach, args=(channel,)).start()
         time.sleep(INTERVAL_CHECK)
 
+def runEach(channel):
+    since = now()
+    try: 
+        print('start crawl channel ', channel)
+        data = get(channel, since)
+        notify(channel, data)
+    except Exception as e:
+        print("ERROR ", str(e))
+
 def get(channel, since):
-    print('crawl channel ' + channel + ' since ' + since)
+    print('crawl channel ', channel, ' since ', since)
     translator = Translator()
 
     c = twint.Config()
@@ -79,7 +82,7 @@ def notify(channel, data):
         sendTele(msg)
 
 def sendTele(msg):
-    print('TELE -> "' + TELE_CHANNEL + '" ===\n ' + msg)
+    print('TELE -> "', TELE_CHANNEL, '" ===\n ', msg)
     if not TELE_CHANNEL:
         return
     bot.sendMessage(text = msg, chat_id = TELE_CHANNEL)
