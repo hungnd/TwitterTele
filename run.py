@@ -22,20 +22,20 @@ bot = telegram.Bot(token=TELE_BOT_TOKEN)
 
 
 def main(): 
+    for channel in TWT_CHANNEL:
+        threading.Thread(daemon = True, target=runEach, args=(channel,)).start()        
+
+def runEach(channel):    
     since = now()
     while True:
-        for channel in TWT_CHANNEL:
-            threading.Thread(target=runEach, args=(channel, since,)).start()
+        try: 
+            print('start crawl channel ', channel)
+            data = get(channel, since)
+            notify(channel, data)
+        except Exception as e:
+            print("ERROR ", str(e))
         since = now()
         time.sleep(INTERVAL_CHECK)
-
-def runEach(channel, since):    
-    try: 
-        print('start crawl channel ', channel)
-        data = get(channel, since)
-        notify(channel, data)
-    except Exception as e:
-        print("ERROR ", str(e))
 
 def get(channel, since):
     print('crawl channel ', channel, ' since ', since)
